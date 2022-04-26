@@ -1,37 +1,69 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
+import datetime as dt
 import requests as req
-
-FISH_MIN_LEVEL = 1
-FISH_MAX_LEVEL = 4
-
-FISH_MIN_TYPE_ID = 0
-FISH_MAX_TYPE_ID = 1000000
-
-FISH_MAX_PIECE = 50
+import json as j
 
 
-def build_url(page, level, id):
-    return 'https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php' \
-           '/Market_Center.getHQNodeData?page={}&num=100&sort=symbol&asc=1&node=sw{}_{}'.format(page, level, id)
+def build_header():
+    return {
+        'Accept': 'application/json, text/javascript, */*; q=0.01',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
+        'Cache-Control': 'no-cache',
+        'Cookie': 'language=zh_CN; ctx=""',
+        'Pragma': 'no-cache',
+        'Referer': 'http://www.cnindex.com.cn/',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36'
+    }
 
 
-def query_fish_type():
-    for id in range(FISH_MIN_TYPE_ID, FISH_MAX_TYPE_ID):
-        for level in range(FISH_MIN_LEVEL, FISH_MAX_LEVEL):
-            for page in range(0, FISH_MAX_PIECE):
-                try:
-                    url = build_url(page, level, str(id).zfill(6))
-                    res = req.get(url)
-                    if res == "[]":
-                        break
-                    else:
-                        print("useful id {}".format(id))
-                except Exception as e:
-                    print(e)
+# curl 'http://www.cnindex.com.cn/queryStockSylDetail' \
+#   -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+#   -H 'Accept-Language: zh-CN,zh;q=0.9' \
+#   -H 'Cache-Control: no-cache' \
+#   -H 'Connection: keep-alive' \
+#   -H 'Content-Type: application/x-www-form-urlencoded; charset=UTF-8' \
+#   -H 'Cookie: language=zh_CN; ctx=""' \
+#   -H 'Origin: http://www.cnindex.com.cn' \
+#   -H 'Pragma: no-cache' \
+#   -H 'Referer: http://www.cnindex.com.cn/module/analysis-csrc-detail.html?act_menu=3' \
+#   -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36' \
+#   -H 'X-Requested-With: XMLHttpRequest' \
+#   --data-raw 'plateCode=4&category=008001&industry=B&dateStr=2022-04-25&pageNo=1&pageSize=10' \
+#   --compressed \
+#   --insecure
+
+def build_url(date):
+    return 'http://www.cnindex.com.cn/syl/{}/crsc.json'.format(date)
+
+
+def query_fish_type(date):
+    try:
+        header = build_header()
+        url = build_url(time_date)
+
+        res = req.get(url, headers=header)
+        if res.status_code != 200:
+            print("code:{},response:{}".format(res.status_code, res.text))
+            return
+
+        # print(res.status_code)
+        # print(res.text)
+
+        result_json = j.loads(res.text)
+
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':
-    query_fish_type()
+    d = dt.datetime.now()
+    print(d)
+    d = d + dt.timedelta(days=-1)
+    print(d)
+    time_date = d.strftime("%Y-%m-%d")
+    print(time_date)
+
+    query_fish_type(time_date)
     1

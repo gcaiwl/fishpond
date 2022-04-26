@@ -28,7 +28,7 @@ def query_fish_company(code):
     url = "https://stock.xueqiu.com/v5/stock/f10/cn/company.json?symbol={}".format(code)
     res = req.get(url, headers=header)
     if res.status_code == 200:
-        apps = j.loads(res.content)
+        apps = j.loads(res.text)
         publish_time = apps["data"]['company']["listed_date"]
     return publish_time
 

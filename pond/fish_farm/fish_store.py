@@ -3,20 +3,29 @@
 
 import pymysql
 
+from pond.fish_util.fish_file import FishFile
 
-class Pond(object):
-    def __init__(self, host, user, password, db, port=3306, charset='utf8'):
-        self.conn = pymysql.connect(
+
+class Farm(object):
+    def __init__(self):
+        kv = FishFile.read_config()
+        if len(kv.keys()) < 1:
+            print('read fish.cfg fail')
+            return
+        self.conn = self.connect(kv['fish_pond_host'], kv['fish_pond_user'], kv['fish_pond_pass'], kv['fish_pond_db'])
+
+    def __del__(self):
+        if self.conn:
+            self.conn.close()
+
+    def connect(self, host, user, password, db, port=3306, charset='utf8'):
+        return pymysql.connect(
             host=host,
             port=port,
             user=user,
             password=password,
             db=db,
             charset=charset)
-
-    def __del__(self):
-        if self.conn:
-            self.conn.close()
 
     def execute(self, sql):
         num = 0
@@ -41,11 +50,6 @@ class Pond(object):
 
 
 if __name__ == '__main__':
-    fish_pond_host = '127.0.0.1'
-    fish_pond_user = 'fish'
-    fish_pond_pass = 'fish1234'
-    fish_pond_db = 'fishpond'
-
-    pond = Pond(fish_pond_host, fish_pond_user, fish_pond_pass, fish_pond_db)
-    num = pond.query('select * from fish_test')
+    farm = Farm()
+    num = farm.query('select * from fish_test')
     print(num)

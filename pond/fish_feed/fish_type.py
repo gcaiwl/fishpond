@@ -1,9 +1,11 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
-import datetime as dt
-import requests as req
 import json as j
+
+import requests as req
+
+from pond.fish_util.fish_log import FishLog
 
 
 def build_header():
@@ -58,12 +60,16 @@ def query_fish_type(date):
 
 
 if __name__ == '__main__':
-    d = dt.datetime.now()
-    print(d)
-    d = d + dt.timedelta(days=-1)
-    print(d)
-    time_date = d.strftime("%Y-%m-%d")
-    print(time_date)
+    # d = dt.datetime.now()
+    # print(d)
+    # d = d + dt.timedelta(days=-1)
+    # print(d)
+    # time_date = d.strftime("%Y-%m-%d")
+    # print(time_date)
+    #
+    # query_fish_type(time_date)
+    # 1
 
-    query_fish_type(time_date)
-    1
+    logger = FishLog.get_logger()
+    FishLog.info(logger, "as22df")
+    pass

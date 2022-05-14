@@ -40,7 +40,7 @@ def query_fish_data(code, begin, count):
     # build url
     url = 'https://stock.xueqiu.com/v5/stock/chart/kline.json?' \
           'symbol={}&begin={}&period=day&type=before&count=-{}' \
-          '&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance'.format(code, begin, count)
+          '&indicator=kline,pe市赢率,pb市净率,ps价售比,pcf市现率,market_capital市值,agt,ggt,balance'.format(code, begin, count)
 
     value = 0
     res = req.get(url, headers=header)
@@ -56,10 +56,19 @@ def query_fish_data(code, begin, count):
             for i in range(len(items)):
                 if i < 1:
                     value = items[i][0]
-                # print(items[i])
-                time_loc = time.localtime(int(items[i][0]) / 1000)
-                time_date = time.strftime("%Y-%m-%d %H:%M:%S", time_loc)
-                print(time_date)
+
+                # 时间，成交量（手），开盘价，最高价，最低价，收盘价, 涨跌额，涨跌幅%，换手率%，成交额
+
+                # [1651075200000, 9175373, 37.04, 40.73, 37.02, 40.08, 2.58, 6.88, 0.9, 364061527.0, None, None, 41.683市盈率TTM,
+                #  3.845市净率, 2.3780197144915296, 21.26340890711174, 56522150642.0总市值, None, None, None, None, None, None, None]
+
+                # TODO：总股本 shares = 总市值/股价
+                56522150642/40
+
+                print(items[i])
+                # time_loc = time.localtime(int(items[i][0]) / 1000)
+                # time_date = time.strftime("%Y-%m-%d %H:%M:%S", time_loc)
+                # print(time_date)
         except Exception as e:
             print(e)
     return value
@@ -92,3 +101,18 @@ if __name__ == '__main__':
         now = query_fish_data(code, now, count)
         if now > 0:
             now -= 3600 * 24 * 1000
+
+# 时间，成交量（手），开盘价，最高价，最低价，收盘价, 涨跌额，涨跌幅%，换手率%，成交额
+
+[1651161600000, 10765633, 40.8, 41.36, 39.25, 40.92, 0.85, 2.12, 1.05,
+ 437483253.0, None, None, None, None, None, None, None, None, None]
+
+
+# TODO    估值百分位
+
+
+
+
+# 公告数据
+# 公告数据
+# https://data.eastmoney.com/notices/stock/002180.html

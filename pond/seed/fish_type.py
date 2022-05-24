@@ -5,7 +5,7 @@ import json as j
 
 import requests as req
 
-from pond.fish_util.fish_log import FishLog
+from pond.utils.fish_log import FishLog
 
 
 def build_header():
@@ -70,6 +70,5 @@ if __name__ == '__main__':
     # query_fish_type(time_date)
     # 1
 
-    logger = FishLog.get_logger()
-    FishLog.info(logger, "as22df")
+    FishLog.info("as22df")
     pass

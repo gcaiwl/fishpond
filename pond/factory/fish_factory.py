@@ -6,34 +6,32 @@ import time
 
 import jsonpath as jp
 
-from pond.fish_farm.fish_store import Farm
-from pond.fish_util.fish_log import FishLog
+from pond.store.fish_store import FishStore
+from pond.utils.fish_log import FishLog
 
 table_schema_cache = dict()
-logger = FishLog.get_logger()
 
 
 class FishFactory(object):
 
     def __init__(self):
-        self.farm = Farm()
+        self.store = FishStore()
 
     def build(self, data, data_schema, table):
         num = 0
         try:
             table_schema = table_schema_cache.get(table)
             if table_schema is None:
-                table_schema = self.farm.schema(table)
+                table_schema = self.store.schema(table)
                 table_schema_cache[table] = table_schema
 
             obj = self._build_object(data, data_schema)
             sql = self._build_insert(table, table_schema, obj)
-            FishLog.info(logger, "build sql={}".format(sql))
+            FishLog.info("build sql={}".format(sql))
 
-            num = self.farm.execute(sql)
+            num = self.store.execute(sql)
         except Exception as e:
-            FishLog.error(logger,
-                          "table = {}; data_schema={}; data={} build exception {}".format(table, data_schema, data, e))
+            FishLog.error("table = {}; data_schema={}; data={} build exception {}".format(table, data_schema, data, e))
         return num
 
     def _build_object(self, data, schema) -> dict:

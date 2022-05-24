@@ -5,13 +5,11 @@ import re
 
 import pymysql
 
-from pond.fish_util.fish_file import FishFile
-from pond.fish_util.fish_log import FishLog
-
-logger = FishLog.get_logger()
+from pond.utils.fish_file import FishFile
+from pond.utils.fish_log import FishLog
 
 
-class Farm(object):
+class FishStore(object):
     connect_cached = dict()
 
     def __init__(self, is_auto_load=True):

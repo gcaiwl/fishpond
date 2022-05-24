@@ -63,7 +63,7 @@ def query_fish_data(code, begin, count):
                 #  3.845市净率, 2.3780197144915296, 21.26340890711174, 56522150642.0总市值, None, None, None, None, None, None, None]
 
                 # TODO：总股本 shares = 总市值/股价
-                56522150642/40
+                56522150642 / 40
 
                 print(items[i])
                 # time_loc = time.localtime(int(items[i][0]) / 1000)
@@ -107,10 +107,7 @@ if __name__ == '__main__':
 [1651161600000, 10765633, 40.8, 41.36, 39.25, 40.92, 0.85, 2.12, 1.05,
  437483253.0, None, None, None, None, None, None, None, None, None]
 
-
 # TODO    估值百分位
-
-
 
 
 # 公告数据

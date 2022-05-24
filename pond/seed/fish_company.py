@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
-from pond.fish_feed.fish_base_feed import FishBase
+from pond.seed.fish_seed import FishSeed
 
 
-class FishCompany(FishBase):
+class FishCompany(FishSeed):
     def build_url(self, code):
         return "https://stock.xueqiu.com/v5/stock/f10/cn/company.json?symbol={}".format(code)
 

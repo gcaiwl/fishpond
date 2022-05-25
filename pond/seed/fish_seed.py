@@ -2,4 +2,5 @@
 # -*- encoding: utf-8 -*-
 
 class FishSeed(object):
-    pass
+    FISH_SEED = ''
+    FISH_DICT = {}

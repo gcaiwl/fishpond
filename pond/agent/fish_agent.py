@@ -14,19 +14,18 @@ class FishAgent(object):
             res = req.get(url, headers=header)
             if res.status_code != 200:
                 FishLog.error("status={}, resonse={}".format(res.status_code, res.text))
-                return
-
-            return res.text
+            return res
         except Exception as e:
             FishLog.error("{} get exception {}".format(url, e))
         return None
 
     @staticmethod
-    def post(url, data=None):
+    def post(url, data=None, header=None):
         try:
-            res = req.post(url, data)
+            res = req.post(url, data, headers=header)
+            if res.status_code != 200:
+                FishLog.error("status={}, resonse={}".format(res.status_code, res.text))
+            return res
         except Exception as e:
             FishLog.error("{} post exception {}".format(url, e))
-        #     apps = j.loads(res.text)
-        #     publish_time = apps["data"]['company']["listed_date"]
-        # return publish_time
+        return None
